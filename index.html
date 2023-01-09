@@ -5,12 +5,50 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Yantramanav:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Travel Weather Dashboard</title>
 </head>
 
 <body>
-    <h1>Travel Weather Dashboard</h1>
+    <header>
+        <h1>Travel Weather Dashboard</h1>
+    </header>
+    <main>
+        <div class="main-outer-div">
+            <section id="city-search" class="main-area-div">
+                <h2>Search for a City</h2>
+                <input type="text" id="city-search-input">
+                <button id="city-search-button">Search</button>
+                <button class="city-button">Durham</button>
+                <button class="city-button">Atlanta</button>
+                <button class="city-button">Washington D.C.</button>
+                <button class="city-button">New York</button>
+                <button class="city-button">San Francisco</button>
+            </section>
+            <section id="weather-area" class="main-area-div">
+                <div id="city-area">
+                    <h2>Atlanta</h2>
+                    <p>Temp: </p>
+                    <p>Wind: </p>
+                    <p>Humidity: </p>
+                </div>
+                <div id="forecast-area">
+                    <h2>5-Day Forecast</h2>
+                    <div id="five-day-container">
+                        <div class="forecast-day"></div>
+                        <div class="forecast-day"></div>
+                        <div class="forecast-day"></div>
+                        <div class="forecast-day"></div>
+                        <div class="forecast-day"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
 
     <script src="assets/js/script.js"></script>
 </body>
