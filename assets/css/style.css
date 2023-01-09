@@ -25,15 +25,15 @@ h2 {
     height: 70vh;
 }
 
-#city-search {
+#city-search-area {
     width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#city-search input,
-#city-search button {
+#city-search-area input,
+#city-search-area button {
     margin: 10px;
     width: 100%;
     height: 40px;
