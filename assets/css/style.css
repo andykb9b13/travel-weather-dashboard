@@ -69,5 +69,12 @@ h2 {
     width: 20%;
     border: 1px solid grey;
     margin: 5px;
-    background-color: rgb(64, 76, 93)
+    background-color: rgb(64, 76, 93);
+    font-size: 1.1em;
+    color: white;
+}
+
+.forecast-day h3,
+.forecast-day p {
+    margin-left: 10px;
 }
