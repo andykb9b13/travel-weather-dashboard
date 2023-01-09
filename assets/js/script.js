@@ -47,7 +47,7 @@ function getCityByName() {
 
             function getCityWeather() {
                 console.log("I'm the city search", data)
-                cityDisplay.innerText = data[0].name + ", " + data[0].state;
+
                 let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + cityLatitude + "&lon=" + cityLongitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
                 fetch(requestUrl)
                     .then(function (response) {
@@ -55,8 +55,8 @@ function getCityByName() {
                     })
                     .then(function (data) {
                         console.log("I'm the weather search", data)
-                        tempDisplay.innerText = "Temp: " + data.main.temp + "°";
-                        windDisplay.innerText = "Wind: " + data.wind.speed + "mph";
+                        tempDisplay.innerText = "Temp: " + Math.floor(data.main.temp) + "°";
+                        windDisplay.innerText = "Wind: " + Math.floor(data.wind.speed) + " mph";
                         humidityDisplay.innerText = "Humidity: " + data.main.humidity + "%";
                     })
 
@@ -73,11 +73,12 @@ function getCityByName() {
                         for (let i = 0; i < data.list.length; i += 8) {
                             fiveDayArray.push(data.list[i])
                         }
+                        cityDisplay.innerText = data.city.name + ", " + fiveDayArray[0].dt_txt;
                         console.log(fiveDayArray)
                         for (let i = 0; i < forecastDays.length; i++) {
                             forecastDays[i].children[0].innerText = "Date: " + fiveDayArray[i].dt_txt;
-                            forecastDays[i].children[1].innerText = "Temp: " + fiveDayArray[i].main.temp + "°";
-                            forecastDays[i].children[2].innerText = "Wind: " + fiveDayArray[i].wind.speed + "mph";
+                            forecastDays[i].children[1].innerText = "Temp: " + Math.floor(fiveDayArray[i].main.temp) + "°";
+                            forecastDays[i].children[2].innerText = "Wind: " + Math.floor(fiveDayArray[i].wind.speed) + " mph";
                             forecastDays[i].children[3].innerText = "Humidity: " + fiveDayArray[i].main.humidity + "%";
                         }
                     })
