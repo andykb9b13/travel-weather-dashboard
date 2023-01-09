@@ -13,6 +13,10 @@
 // Latitude and Longitude
 // "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}"
 
+let today = dayjs();
+
+console.log(today)
+
 let citySearchButton = document.getElementById("city-search-button");
 let citySearchArea = document.getElementById("city-search-area");
 let citySearchInput = document.getElementById("city-search-input");
@@ -27,6 +31,14 @@ let day4 = document.getElementById("day-4");
 let day5 = document.getElementById("day-5");
 let forecastDays = document.querySelectorAll(".forecast-day")
 
+function reformatDate(date) {
+    let newDate = date;
+    let year = newDate.slice(0, 4);
+    let month = newDate.slice(5, 7);
+    let day = newDate.slice(8, 10);
+    return month + "/" + day + "/" + year;
+}
+
 function getCityByName() {
     let newCityName = citySearchInput.value
     let requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + newCityName + ",US&limit=1&appid=a3b196b189c8e6852bde36ecc0a1be43"
@@ -36,6 +48,7 @@ function getCityByName() {
             return response.json()
         })
         .then(function (data) {
+            console.log("I'm getCityByName", data)
             let newCityButton = document.createElement('button');
             newCityButton.innerText = data[0].name;
             newCityButton.addEventListener("click", getCityWeather)
@@ -73,10 +86,12 @@ function getCityByName() {
                         for (let i = 0; i < data.list.length; i += 8) {
                             fiveDayArray.push(data.list[i])
                         }
-                        cityDisplay.innerText = data.city.name + ", " + fiveDayArray[0].dt_txt;
+                        // turn this into a function that inputs the date as the parameter
+
+                        cityDisplay.innerText = data.city.name + " " + reformatDate(fiveDayArray[0].dt_txt)
                         console.log(fiveDayArray)
                         for (let i = 0; i < forecastDays.length; i++) {
-                            forecastDays[i].children[0].innerText = "Date: " + fiveDayArray[i].dt_txt;
+                            forecastDays[i].children[0].innerText = "Date: " + reformatDate(fiveDayArray[i].dt_txt);
                             forecastDays[i].children[1].innerText = "Temp: " + Math.floor(fiveDayArray[i].main.temp) + "°";
                             forecastDays[i].children[2].innerText = "Wind: " + Math.floor(fiveDayArray[i].wind.speed) + " mph";
                             forecastDays[i].children[3].innerText = "Humidity: " + fiveDayArray[i].main.humidity + "%";
@@ -88,3 +103,4 @@ function getCityByName() {
 
 }
 citySearchButton.addEventListener("click", getCityByName);
+
