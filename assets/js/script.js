@@ -31,6 +31,9 @@ let citySearchButton = document.getElementById("city-search-button");
 let citySearchArea = document.getElementById("city-search-area");
 let citySearchInput = document.getElementById("city-search-input");
 let cityDisplay = document.getElementById("city-display");
+let tempDisplay = document.getElementById("temp-display");
+let windDisplay = document.getElementById("wind-display");
+let humidityDisplay = document.getElementById("humidity-display");
 
 function getCityByName() {
     let newCityName = citySearchInput.value
@@ -45,19 +48,21 @@ function getCityByName() {
             let newCityButton = document.createElement('button');
             newCityButton.innerText = data[0].name;
             citySearchArea.appendChild(newCityButton);
+            cityDisplay.innerText = data[0].name + ", " + data[0].state;
             let cityLatitude = data[0].lat;
             let cityLongitude = data[0].lon;
 
             function getCityWeather() {
-                let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + cityLatitude + "&lon=" + cityLongitude + "&appid=a3b196b189c8e6852bde36ecc0a1be43";
+                let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + cityLatitude + "&lon=" + cityLongitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
                 fetch(requestUrl)
                     .then(function (response) {
                         return response.json()
                     })
                     .then(function (data) {
                         console.log(data)
-                        cityDisplay.innerText = data.name;
-
+                        tempDisplay.innerText = "Temp: " + data.main.temp + "°";
+                        windDisplay.innerText = "Wind: " + data.wind.speed + "mph";
+                        humidityDisplay.innerText = "Humidity: " + data.main.humidity + "%";
                     })
             } getCityWeather()
         })
