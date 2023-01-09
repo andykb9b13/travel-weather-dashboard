@@ -81,11 +81,16 @@ function getCityByName() {
                     })
                     .then(function (data) {
                         console.log("I'm the 5 day forcast search", data);
+                        let fiveDayArray = []
+                        for (let i = 0; i < data.list.length; i += 8) {
+                            fiveDayArray.push(data.list[i])
+                        }
+                        console.log(fiveDayArray)
                         for (let i = 0; i < forecastDays.length; i++) {
-                            forecastDays[i].children[0].innerText = "Date: " + data.list[i].dt_txt;
-                            forecastDays[i].children[1].innerText = "Temp: " + data.list[i].main.temp + "°";
-                            forecastDays[i].children[2].innerText = "Wind: " + data.list[i].wind.speed + "mph";
-                            forecastDays[i].children[3].innerText = "Humidity: " + data.list[i].main.humidity + "%";
+                            forecastDays[i].children[0].innerText = "Date: " + fiveDayArray[i].dt_txt;
+                            forecastDays[i].children[1].innerText = "Temp: " + fiveDayArray[i].main.temp + "°";
+                            forecastDays[i].children[2].innerText = "Wind: " + fiveDayArray[i].wind.speed + "mph";
+                            forecastDays[i].children[3].innerText = "Humidity: " + fiveDayArray[i].main.humidity + "%";
                         }
                     })
             } getCityWeather()
