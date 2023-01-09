@@ -34,6 +34,12 @@ let cityDisplay = document.getElementById("city-display");
 let tempDisplay = document.getElementById("temp-display");
 let windDisplay = document.getElementById("wind-display");
 let humidityDisplay = document.getElementById("humidity-display");
+let day1 = document.getElementById("day-1");
+let day2 = document.getElementById("day-2");
+let day3 = document.getElementById("day-3");
+let day4 = document.getElementById("day-4");
+let day5 = document.getElementById("day-5");
+let forecastDays = document.querySelectorAll(".forecast-day")
 
 function getCityByName() {
     let newCityName = citySearchInput.value
@@ -44,8 +50,9 @@ function getCityByName() {
             return response.json()
         })
         .then(function (data) {
-            console.log(data)
+            console.log("I'm the city search", data)
             let newCityButton = document.createElement('button');
+            // newCityButton.setAttribute("class", "city-button")
             newCityButton.innerText = data[0].name;
             citySearchArea.appendChild(newCityButton);
             cityDisplay.innerText = data[0].name + ", " + data[0].state;
@@ -59,12 +66,30 @@ function getCityByName() {
                         return response.json()
                     })
                     .then(function (data) {
-                        console.log(data)
+                        console.log("I'm the weather search", data)
                         tempDisplay.innerText = "Temp: " + data.main.temp + "°";
                         windDisplay.innerText = "Wind: " + data.wind.speed + "mph";
                         humidityDisplay.innerText = "Humidity: " + data.main.humidity + "%";
                     })
+
+            }
+            function getFiveDayForecast() {
+                let requestUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + cityLatitude + "&lon=" + cityLongitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
+                fetch(requestUrl)
+                    .then(function (response) {
+                        return response.json()
+                    })
+                    .then(function (data) {
+                        console.log("I'm the 5 day forcast search", data);
+                        for (let i = 0; i < forecastDays.length; i++) {
+                            forecastDays[i].children[0].innerText = "Date: " + data.list[i].dt_txt;
+                            forecastDays[i].children[1].innerText = "Temp: " + data.list[i].main.temp + "°";
+                            forecastDays[i].children[2].innerText = "Wind: " + data.list[i].wind.speed + "mph";
+                            forecastDays[i].children[3].innerText = "Humidity: " + data.list[i].main.humidity + "%";
+                        }
+                    })
             } getCityWeather()
+            getFiveDayForecast()
         })
 
 }
