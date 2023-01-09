@@ -13,14 +13,11 @@
 // Latitude and Longitude
 // "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}"
 
-let today = dayjs();
-
-console.log(today)
-
 let citySearchButton = document.getElementById("city-search-button");
 let citySearchArea = document.getElementById("city-search-area");
 let citySearchInput = document.getElementById("city-search-input");
 let cityDisplay = document.getElementById("city-display");
+let cityArea = document.getElementById("city-area");
 let tempDisplay = document.getElementById("temp-display");
 let windDisplay = document.getElementById("wind-display");
 let humidityDisplay = document.getElementById("humidity-display");
@@ -29,7 +26,7 @@ let day2 = document.getElementById("day-2");
 let day3 = document.getElementById("day-3");
 let day4 = document.getElementById("day-4");
 let day5 = document.getElementById("day-5");
-let forecastDays = document.querySelectorAll(".forecast-day")
+let forecastDays = document.querySelectorAll(".forecast-day");
 
 function reformatDate(date) {
     let newDate = date;
@@ -45,14 +42,14 @@ function getCityByName() {
 
     fetch(requestUrl)
         .then(function (response) {
-            return response.json()
+            return response.json();
         })
         .then(function (data) {
-            console.log("I'm getCityByName", data)
+            console.log("I'm getCityByName", data);
             let newCityButton = document.createElement('button');
             newCityButton.innerText = data[0].name;
-            newCityButton.addEventListener("click", getCityWeather)
-            newCityButton.addEventListener("click", getFiveDayForecast)
+            newCityButton.addEventListener("click", getCityWeather);
+            newCityButton.addEventListener("click", getFiveDayForecast);
             citySearchArea.appendChild(newCityButton);
 
             let cityLatitude = data[0].lat;
@@ -84,21 +81,21 @@ function getCityByName() {
                         console.log("I'm the 5 day forcast search", data);
                         let fiveDayArray = []
                         for (let i = 0; i < data.list.length; i += 8) {
-                            fiveDayArray.push(data.list[i])
+                            fiveDayArray.push(data.list[i]);
                         }
-                        // turn this into a function that inputs the date as the parameter
-
-                        cityDisplay.innerText = data.city.name + " " + reformatDate(fiveDayArray[0].dt_txt)
-                        console.log(fiveDayArray)
+                        cityDisplay.innerText = data.city.name + " " + reformatDate(fiveDayArray[0].dt_txt);
+                        cityArea.children[1].children[0].setAttribute("src", "http://openweathermap.org/img/w/" + fiveDayArray[0].weather[0].icon + ".png")
+                        console.log(fiveDayArray);
                         for (let i = 0; i < forecastDays.length; i++) {
                             forecastDays[i].children[0].innerText = "Date: " + reformatDate(fiveDayArray[i].dt_txt);
-                            forecastDays[i].children[1].innerText = "Temp: " + Math.floor(fiveDayArray[i].main.temp) + "°";
-                            forecastDays[i].children[2].innerText = "Wind: " + Math.floor(fiveDayArray[i].wind.speed) + " mph";
-                            forecastDays[i].children[3].innerText = "Humidity: " + fiveDayArray[i].main.humidity + "%";
+                            forecastDays[i].children[1].children[0].setAttribute("src", "http://openweathermap.org/img/w/" + fiveDayArray[i].weather[0].icon + ".png")
+                            forecastDays[i].children[2].innerText = "Temp: " + Math.floor(fiveDayArray[i].main.temp) + "°";
+                            forecastDays[i].children[3].innerText = "Wind: " + Math.floor(fiveDayArray[i].wind.speed) + " mph";
+                            forecastDays[i].children[4].innerText = "Humidity: " + fiveDayArray[i].main.humidity + "%";
                         }
                     })
-            } getCityWeather()
-            getFiveDayForecast()
+            } getCityWeather();
+            getFiveDayForecast();
         })
 
 }
