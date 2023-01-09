@@ -17,6 +17,7 @@ h2 {
 
 .main-outer-div {
     display: flex;
+    height: 150vh;
 }
 
 .main-area-div {
@@ -49,7 +50,7 @@ h2 {
 }
 
 #city-area {
-    height: 40vh;
+    height: 45vh;
     border: 1px solid grey;
 }
 
@@ -65,7 +66,7 @@ h2 {
 }
 
 .forecast-day {
-    height: 20%;
+    height: 25%;
     width: 20%;
     border: 1px solid grey;
     margin: 5px;

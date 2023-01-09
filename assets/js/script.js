@@ -36,8 +36,12 @@ function reformatDate(date) {
     return month + "/" + day + "/" + year;
 }
 
+
 function getCityByName() {
-    let newCityName = citySearchInput.value
+    let newCityName = citySearchInput.value;
+    if (newCityName === "") {
+        newCityName = "Durham"
+    }
     let requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + newCityName + ",US&limit=1&appid=a3b196b189c8e6852bde36ecc0a1be43"
 
     fetch(requestUrl)
@@ -100,4 +104,6 @@ function getCityByName() {
 
 }
 citySearchButton.addEventListener("click", getCityByName);
+
+getCityByName()
 
