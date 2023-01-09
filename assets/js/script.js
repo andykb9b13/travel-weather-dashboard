@@ -14,20 +14,6 @@
 // "https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}"
 
 let citySearchButton = document.getElementById("city-search-button");
-
-// function getCitybyLatLon() {
-//     let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=33.753746&lon=-84.386330&appid=a3b196b189c8e6852bde36ecc0a1be43";
-
-//     fetch(requestUrl)
-//         .then(function (response) {
-//             return response.json()
-//         })
-//         .then(function (data) {
-//             console.log(data)
-//         })
-// }
-
-// citySearchButton.addEventListener("click", getCity)
 let citySearchArea = document.getElementById("city-search-area");
 let citySearchInput = document.getElementById("city-search-input");
 let cityDisplay = document.getElementById("city-display");
@@ -50,16 +36,18 @@ function getCityByName() {
             return response.json()
         })
         .then(function (data) {
-            console.log("I'm the city search", data)
             let newCityButton = document.createElement('button');
-            // newCityButton.setAttribute("class", "city-button")
             newCityButton.innerText = data[0].name;
+            newCityButton.addEventListener("click", getCityWeather)
+            newCityButton.addEventListener("click", getFiveDayForecast)
             citySearchArea.appendChild(newCityButton);
-            cityDisplay.innerText = data[0].name + ", " + data[0].state;
+
             let cityLatitude = data[0].lat;
             let cityLongitude = data[0].lon;
 
             function getCityWeather() {
+                console.log("I'm the city search", data)
+                cityDisplay.innerText = data[0].name + ", " + data[0].state;
                 let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + cityLatitude + "&lon=" + cityLongitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
                 fetch(requestUrl)
                     .then(function (response) {
@@ -98,4 +86,4 @@ function getCityByName() {
         })
 
 }
-citySearchButton.addEventListener("click", getCityByName)
+citySearchButton.addEventListener("click", getCityByName);
