@@ -36,6 +36,7 @@ function reformatDate(date) {
     return month + "/" + day + "/" + year;
 }
 
+// TODO set local storage for city search buttons :(
 
 function getCityByName() {
     let newCityName = citySearchInput.value;
