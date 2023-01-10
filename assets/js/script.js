@@ -53,8 +53,7 @@ function getCityByName() {
             console.log("I'm getCityByName", data);
             let newCityButton = document.createElement('button');
             newCityButton.innerText = data[0].name;
-            newCityButton.addEventListener("click", getCityWeather);
-            newCityButton.addEventListener("click", getFiveDayForecast);
+
             citySearchArea.appendChild(newCityButton);
             let CityName = data[0].name;
             let cityLatitude = data[0].lat;
@@ -70,9 +69,15 @@ function getCityByName() {
             // console.log("im the city name", data[0].name)
             cityStorage = JSON.parse(localStorage.getItem("cityNames")) || [];
             cityStorage.push(coordinates);
+            console.log("I've been added to cityStorage by the search", cityStorage)
             localStorage.setItem("cityNames", JSON.stringify(cityStorage));
             getCityWeather(coordinates.latitude, coordinates.longitude);
             getFiveDayForecast(coordinates.latitude, coordinates.longitude);
+
+            for (let i = 0; i < cityStorage.length; i++) {
+                newCityButton.addEventListener("click", getCityWeather(cityStorage.latitude, cityStorage.longitude));
+                newCityButton.addEventListener("click", getFiveDayForecast(cityStorage.latitude, cityStorage.longitude));
+            }
         })
 }
 
@@ -120,6 +125,7 @@ citySearchButton.addEventListener("click", getCityByName);
 
 function recallButtons() {
     let cityStorage = JSON.parse(localStorage.getItem("cityNames")) || [];
+    console.log("I'm showing the cityStorage from recallButtons()", cityStorage);
     localStorage.setItem("cityNames", JSON.stringify(cityStorage))
     for (let i = 0; i < cityStorage.length; i++) {
         let recalledCityButton = document.createElement('button');
