@@ -23,6 +23,13 @@ let windDisplay = document.getElementById("wind-display");
 let humidityDisplay = document.getElementById("humidity-display");
 let forecastDays = document.querySelectorAll(".forecast-day");
 let cityStorage = [];
+let coordinates = {
+    name: "",
+    latitude: "",
+    longitude: ""
+}
+
+
 
 function reformatDate(date) {
     let newDate = date;
@@ -32,9 +39,9 @@ function reformatDate(date) {
     return month + "/" + day + "/" + year;
 }
 
-// TODO set local storage for city search buttons :(
 
-// recallButtons()
+
+recallButtons()
 
 function getCityByName() {
 
@@ -50,78 +57,82 @@ function getCityByName() {
             let newCityButton = document.createElement('button');
             newCityButton.innerText = data[0].name;
 
-
-
             newCityButton.addEventListener("click", getCityWeather);
             newCityButton.addEventListener("click", getFiveDayForecast);
             citySearchArea.appendChild(newCityButton);
-
+            let CityName = data[0].name
             let cityLatitude = data[0].lat;
             let cityLongitude = data[0].lon;
-
-            function getCityWeather() {
-                console.log("I'm the city search", data)
-                console.log("im the city name", data[0].name)
-                cityStorage.push(data[0].name);
-                localStorage.setItem("cityNames", JSON.stringify(cityStorage));
-                let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + cityLatitude + "&lon=" + cityLongitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
-                fetch(requestUrl)
-                    .then(function (response) {
-                        return response.json()
-                    })
-                    .then(function (data) {
-                        console.log("I'm the weather search", data)
-                        tempDisplay.innerText = "Temp: " + Math.floor(data.main.temp) + "°";
-                        windDisplay.innerText = "Wind: " + Math.floor(data.wind.speed) + " mph";
-                        humidityDisplay.innerText = "Humidity: " + data.main.humidity + "%";
-                    })
-
+            coordinates = {
+                name: CityName,
+                latitude: cityLatitude,
+                longitude: cityLongitude
             }
-            function getFiveDayForecast() {
-                let requestUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + cityLatitude + "&lon=" + cityLongitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
-                fetch(requestUrl)
-                    .then(function (response) {
-                        return response.json()
-                    })
-                    .then(function (data) {
-                        console.log("I'm the 5 day forcast search", data);
-                        let fiveDayArray = []
-                        for (let i = 0; i < data.list.length; i += 8) {
-                            fiveDayArray.push(data.list[i]);
-                        }
-                        cityDisplay.innerText = data.city.name + " " + reformatDate(fiveDayArray[0].dt_txt);
-                        cityArea.children[1].children[0].setAttribute("src", "http://openweathermap.org/img/w/" + fiveDayArray[0].weather[0].icon + ".png")
-                        console.log(fiveDayArray);
-                        for (let i = 0; i < forecastDays.length; i++) {
-                            forecastDays[i].children[0].innerText = "Date: " + reformatDate(fiveDayArray[i].dt_txt);
-                            forecastDays[i].children[1].children[0].setAttribute("src", "http://openweathermap.org/img/w/" + fiveDayArray[i].weather[0].icon + ".png")
-                            forecastDays[i].children[2].innerText = "Temp: " + Math.floor(fiveDayArray[i].main.temp) + "°";
-                            forecastDays[i].children[3].innerText = "Wind: " + Math.floor(fiveDayArray[i].wind.speed) + " mph";
-                            forecastDays[i].children[4].innerText = "Humidity: " + fiveDayArray[i].main.humidity + "%";
-                        }
-                    })
-            }
-            getCityWeather();
-            getFiveDayForecast();
+
+            cityStorage.push(coordinates)
+            // console.log("I'm the city search", data)
+            // console.log("im the city name", data[0].name)
+
+            // localStorage.setItem("cityNames", JSON.stringify(cityStorage));
+
+            getCityWeather(coordinates.latitude, coordinates.longitude);
+            getFiveDayForecast(coordinates.latitude, coordinates.longitude);
         })
 }
+
+function getCityWeather(latitude, longitude) {
+    let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
+    fetch(requestUrl)
+        .then(function (response) {
+            return response.json()
+        })
+        .then(function (data) {
+            console.log("I'm the weather search", data)
+            tempDisplay.innerText = "Temp: " + Math.floor(data.main.temp) + "°";
+            windDisplay.innerText = "Wind: " + Math.floor(data.wind.speed) + " mph";
+            humidityDisplay.innerText = "Humidity: " + data.main.humidity + "%";
+        })
+
+}
+
+function getFiveDayForecast(latitude, longitude) {
+    let requestUrl = "https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
+    fetch(requestUrl)
+        .then(function (response) {
+            return response.json()
+        })
+        .then(function (data) {
+            console.log("I'm the 5 day forcast search", data);
+            let fiveDayArray = []
+            for (let i = 0; i < data.list.length; i += 8) {
+                fiveDayArray.push(data.list[i]);
+            }
+            cityDisplay.innerText = data.city.name + " " + reformatDate(fiveDayArray[0].dt_txt);
+            cityArea.children[1].children[0].setAttribute("src", "http://openweathermap.org/img/w/" + fiveDayArray[0].weather[0].icon + ".png")
+            console.log(fiveDayArray);
+            for (let i = 0; i < forecastDays.length; i++) {
+                forecastDays[i].children[0].innerText = "Date: " + reformatDate(fiveDayArray[i].dt_txt);
+                forecastDays[i].children[1].children[0].setAttribute("src", "http://openweathermap.org/img/w/" + fiveDayArray[i].weather[0].icon + ".png")
+                forecastDays[i].children[2].innerText = "Temp: " + Math.floor(fiveDayArray[i].main.temp) + "°";
+                forecastDays[i].children[3].innerText = "Wind: " + Math.floor(fiveDayArray[i].wind.speed) + " mph";
+                forecastDays[i].children[4].innerText = "Humidity: " + fiveDayArray[i].main.humidity + "%";
+            }
+        })
+}
+
 citySearchButton.addEventListener("click", getCityByName);
 
 function recallButtons() {
-    let myCities = JSON.parse(localStorage.getItem("cityNames"));
-    cityStorage = myCities;
-
+    let cityStorage = JSON.parse(localStorage.getItem("cityNames"));
+    localStorage.setItem("cityNames", JSON.stringify(cityStorage))
     for (let i = 0; i < cityStorage.length; i++) {
         let recalledCityButton = document.createElement('button');
-        recalledCityButton.innerText = cityStorage[i];
+        recalledCityButton.innerText = cityStorage[i].name;
         citySearchArea.appendChild(recalledCityButton);
-        recalledCityButton.addEventListener("click", getCityWeather);
-        recalledCityButton.addEventListener("click", getFiveDayForecast);
-
+        recalledCityButton.addEventListener("click", function getRecalledWeather() {
+            getCityWeather(cityStorage[i].latitude, cityStorage[i].longitude)
+            getFiveDayForecast(cityStorage[i].latitude, cityStorage[i].longitude)
+        })
     }
 }
-
-
-
-
 
