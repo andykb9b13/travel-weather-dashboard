@@ -34,6 +34,8 @@ function reformatDate(date) {
 
 // TODO set local storage for city search buttons :(
 
+// recallButtons()
+
 function getCityByName() {
 
     let newCityName = citySearchInput.value;
@@ -98,18 +100,28 @@ function getCityByName() {
                             forecastDays[i].children[4].innerText = "Humidity: " + fiveDayArray[i].main.humidity + "%";
                         }
                     })
-            } getCityWeather();
+            }
+            getCityWeather();
             getFiveDayForecast();
         })
-    // cityStorage = JSON.parse(localStorage.getItem("cityNames"));
 }
 citySearchButton.addEventListener("click", getCityByName);
 
-// function setCityStorage() {
-//     cityNameStorage = JSON.parse(localStorage.getItem("cityNames"));
-//     cityNameStorage.push(newCityButton.innerText);
-//     localStorage.setItem("cityNames", JSON.stringify(cityNameStorage));
-// }
+function recallButtons() {
+    let myCities = JSON.parse(localStorage.getItem("cityNames"));
+    cityStorage = myCities;
+
+    for (let i = 0; i < cityStorage.length; i++) {
+        let recalledCityButton = document.createElement('button');
+        recalledCityButton.innerText = cityStorage[i];
+        citySearchArea.appendChild(recalledCityButton);
+        recalledCityButton.addEventListener("click", getCityWeather);
+        recalledCityButton.addEventListener("click", getFiveDayForecast);
+
+    }
+}
+
+
 
 
 
