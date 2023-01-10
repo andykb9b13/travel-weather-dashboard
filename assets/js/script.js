@@ -73,13 +73,13 @@ function getCityByName() {
             localStorage.setItem("cityNames", JSON.stringify(cityStorage));
             getCityWeather(coordinates.latitude, coordinates.longitude);
             getFiveDayForecast(coordinates.latitude, coordinates.longitude);
+            newCityButton.addEventListener("click", getCityWeather(cityLatitude, cityLongitude));
+            newCityButton.addEventListener("click", getFiveDayForecast(cityLatitude, cityLongitude));
 
-            for (let i = 0; i < cityStorage.length; i++) {
-                newCityButton.addEventListener("click", getCityWeather(cityStorage.latitude, cityStorage.longitude));
-                newCityButton.addEventListener("click", getFiveDayForecast(cityStorage.latitude, cityStorage.longitude));
-            }
+
         })
 }
+
 
 function getCityWeather(latitude, longitude) {
     let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
