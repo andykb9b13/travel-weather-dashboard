@@ -36,6 +36,7 @@ function reformatDate(date) {
     let day = newDate.slice(8, 10);
     return month + "/" + day + "/" + year;
 }
+// localStorage.setItem("cityNames", JSON.stringify(cityStorage));
 
 recallButtons()
 
@@ -67,7 +68,7 @@ function getCityByName() {
 
             // console.log("I'm the city search", data)
             // console.log("im the city name", data[0].name)
-            cityStorage = JSON.parse(localStorage.getItem("cityNames"))
+            cityStorage = JSON.parse(localStorage.getItem("cityNames")) || [];
             cityStorage.push(coordinates);
             localStorage.setItem("cityNames", JSON.stringify(cityStorage));
             getCityWeather(coordinates.latitude, coordinates.longitude);
@@ -118,7 +119,7 @@ function getFiveDayForecast(latitude, longitude) {
 citySearchButton.addEventListener("click", getCityByName);
 
 function recallButtons() {
-    let cityStorage = JSON.parse(localStorage.getItem("cityNames"));
+    let cityStorage = JSON.parse(localStorage.getItem("cityNames")) || [];
     localStorage.setItem("cityNames", JSON.stringify(cityStorage))
     for (let i = 0; i < cityStorage.length; i++) {
         let recalledCityButton = document.createElement('button');
