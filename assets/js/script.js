@@ -29,8 +29,6 @@ let coordinates = {
     longitude: ""
 }
 
-
-
 function reformatDate(date) {
     let newDate = date;
     let year = newDate.slice(0, 4);
@@ -38,8 +36,6 @@ function reformatDate(date) {
     let day = newDate.slice(8, 10);
     return month + "/" + day + "/" + year;
 }
-
-
 
 recallButtons()
 
@@ -60,7 +56,7 @@ function getCityByName() {
             newCityButton.addEventListener("click", getCityWeather);
             newCityButton.addEventListener("click", getFiveDayForecast);
             citySearchArea.appendChild(newCityButton);
-            let CityName = data[0].name
+            let CityName = data[0].name;
             let cityLatitude = data[0].lat;
             let cityLongitude = data[0].lon;
             coordinates = {
@@ -69,12 +65,12 @@ function getCityByName() {
                 longitude: cityLongitude
             }
 
-            cityStorage.push(coordinates)
+
             // console.log("I'm the city search", data)
             // console.log("im the city name", data[0].name)
 
-            // localStorage.setItem("cityNames", JSON.stringify(cityStorage));
-
+            cityStorage.push(coordinates);
+            localStorage.setItem("cityNames", JSON.stringify(cityStorage));
             getCityWeather(coordinates.latitude, coordinates.longitude);
             getFiveDayForecast(coordinates.latitude, coordinates.longitude);
         })
