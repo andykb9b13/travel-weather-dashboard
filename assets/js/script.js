@@ -21,12 +21,8 @@ let cityArea = document.getElementById("city-area");
 let tempDisplay = document.getElementById("temp-display");
 let windDisplay = document.getElementById("wind-display");
 let humidityDisplay = document.getElementById("humidity-display");
-let day1 = document.getElementById("day-1");
-let day2 = document.getElementById("day-2");
-let day3 = document.getElementById("day-3");
-let day4 = document.getElementById("day-4");
-let day5 = document.getElementById("day-5");
 let forecastDays = document.querySelectorAll(".forecast-day");
+let cityStorage = [];
 
 function reformatDate(date) {
     let newDate = date;
@@ -39,10 +35,8 @@ function reformatDate(date) {
 // TODO set local storage for city search buttons :(
 
 function getCityByName() {
+
     let newCityName = citySearchInput.value;
-    if (newCityName === "") {
-        newCityName = "Durham"
-    }
     let requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + newCityName + ",US&limit=1&appid=a3b196b189c8e6852bde36ecc0a1be43"
 
     fetch(requestUrl)
@@ -53,6 +47,9 @@ function getCityByName() {
             console.log("I'm getCityByName", data);
             let newCityButton = document.createElement('button');
             newCityButton.innerText = data[0].name;
+
+
+
             newCityButton.addEventListener("click", getCityWeather);
             newCityButton.addEventListener("click", getFiveDayForecast);
             citySearchArea.appendChild(newCityButton);
@@ -62,7 +59,9 @@ function getCityByName() {
 
             function getCityWeather() {
                 console.log("I'm the city search", data)
-
+                console.log("im the city name", data[0].name)
+                cityStorage.push(data[0].name);
+                localStorage.setItem("cityNames", JSON.stringify(cityStorage));
                 let requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + cityLatitude + "&lon=" + cityLongitude + "&units=imperial&appid=a3b196b189c8e6852bde36ecc0a1be43";
                 fetch(requestUrl)
                     .then(function (response) {
@@ -102,9 +101,15 @@ function getCityByName() {
             } getCityWeather();
             getFiveDayForecast();
         })
-
+    // cityStorage = JSON.parse(localStorage.getItem("cityNames"));
 }
 citySearchButton.addEventListener("click", getCityByName);
 
-getCityByName()
+// function setCityStorage() {
+//     cityNameStorage = JSON.parse(localStorage.getItem("cityNames"));
+//     cityNameStorage.push(newCityButton.innerText);
+//     localStorage.setItem("cityNames", JSON.stringify(cityNameStorage));
+// }
+
+
 
