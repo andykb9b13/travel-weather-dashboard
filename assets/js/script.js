@@ -52,7 +52,6 @@ function getCityByName() {
             console.log("I'm getCityByName", data);
             let newCityButton = document.createElement('button');
             newCityButton.innerText = data[0].name;
-
             newCityButton.addEventListener("click", getCityWeather);
             newCityButton.addEventListener("click", getFiveDayForecast);
             citySearchArea.appendChild(newCityButton);
@@ -68,7 +67,7 @@ function getCityByName() {
 
             // console.log("I'm the city search", data)
             // console.log("im the city name", data[0].name)
-
+            cityStorage = JSON.parse(localStorage.getItem("cityNames"))
             cityStorage.push(coordinates);
             localStorage.setItem("cityNames", JSON.stringify(cityStorage));
             getCityWeather(coordinates.latitude, coordinates.longitude);
