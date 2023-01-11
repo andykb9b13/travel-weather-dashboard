@@ -31,7 +31,7 @@ let coordinates = {
 
 // Default display is for Durham, NC current conditions
 function defaultDisplay() {
-    let requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + "Durham" + ",US&limit=1&appid=a3b196b189c8e6852bde36ecc0a1be43"
+    let requestUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + "Durham" + ",US&limit=1&appid=a3b196b189c8e6852bde36ecc0a1be43"
     fetch(requestUrl)
         .then(function (response) {
             return response.json();
@@ -69,7 +69,7 @@ sets it to localStorage, and creates an eventListener for recalling the weather
 */
 function getCityByName() {
     let newCityName = citySearchInput.value;
-    let requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + newCityName + ",US&limit=1&appid=a3b196b189c8e6852bde36ecc0a1be43"
+    let requestUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + newCityName + ",US&limit=1&appid=a3b196b189c8e6852bde36ecc0a1be43"
     // call the API
     fetch(requestUrl)
         .then(function (response) {
