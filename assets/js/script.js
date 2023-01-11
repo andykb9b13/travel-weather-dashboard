@@ -16,6 +16,7 @@
 let citySearchButton = document.getElementById("city-search-button");
 let citySearchArea = document.getElementById("city-search-area");
 let citySearchInput = document.getElementById("city-search-input");
+let citySearchList = document.getElementById("citySearchList");
 let cityDisplay = document.getElementById("city-display");
 let cityArea = document.getElementById("city-area");
 let tempDisplay = document.getElementById("temp-display");
@@ -36,7 +37,6 @@ function reformatDate(date) {
     let day = newDate.slice(8, 10);
     return month + "/" + day + "/" + year;
 }
-// localStorage.setItem("cityNames", JSON.stringify(cityStorage));
 
 recallButtons()
 
@@ -55,6 +55,7 @@ function getCityByName() {
             newCityButton.innerText = data[0].name;
 
             citySearchArea.appendChild(newCityButton);
+            newCityButton.setAttribute("class", "city-button");
             let CityName = data[0].name;
             let cityLatitude = data[0].lat;
             let cityLongitude = data[0].lon;
@@ -63,18 +64,17 @@ function getCityByName() {
                 latitude: cityLatitude,
                 longitude: cityLongitude
             }
-
-
-            // console.log("I'm the city search", data)
-            // console.log("im the city name", data[0].name)
             cityStorage = JSON.parse(localStorage.getItem("cityNames")) || [];
             cityStorage.push(coordinates);
             console.log("I've been added to cityStorage by the search", cityStorage)
             localStorage.setItem("cityNames", JSON.stringify(cityStorage));
             getCityWeather(coordinates.latitude, coordinates.longitude);
             getFiveDayForecast(coordinates.latitude, coordinates.longitude);
-            newCityButton.addEventListener("click", getCityWeather(cityLatitude, cityLongitude));
-            newCityButton.addEventListener("click", getFiveDayForecast(cityLatitude, cityLongitude));
+
+            newCityButton.addEventListener("click", function getRecalledWeather() {
+                getCityWeather(data[0].lat, data[0].lon);
+                getFiveDayForecast(data[0].lat, data[0].lon);
+            })
 
 
         })
@@ -129,11 +129,12 @@ function recallButtons() {
     localStorage.setItem("cityNames", JSON.stringify(cityStorage))
     for (let i = 0; i < cityStorage.length; i++) {
         let recalledCityButton = document.createElement('button');
+        recalledCityButton.setAttribute("class", "city-button")
         recalledCityButton.innerText = cityStorage[i].name;
         citySearchArea.appendChild(recalledCityButton);
         recalledCityButton.addEventListener("click", function getRecalledWeather() {
-            getCityWeather(cityStorage[i].latitude, cityStorage[i].longitude)
-            getFiveDayForecast(cityStorage[i].latitude, cityStorage[i].longitude)
+            getCityWeather(cityStorage[i].latitude, cityStorage[i].longitude);
+            getFiveDayForecast(cityStorage[i].latitude, cityStorage[i].longitude);
         })
     }
 }
