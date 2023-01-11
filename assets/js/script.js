@@ -30,6 +30,29 @@ let coordinates = {
     longitude: ""
 }
 
+// Default display is for Durham, NC current conditions
+function defaultDisplay() {
+    let requestUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + "Durham" + ",US&limit=1&appid=a3b196b189c8e6852bde36ecc0a1be43"
+    fetch(requestUrl)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            let CityName = data[0].name;
+            let cityLatitude = data[0].lat;
+            let cityLongitude = data[0].lon;
+            coordinates = {
+                name: CityName,
+                latitude: cityLatitude,
+                longitude: cityLongitude
+            }
+            getCityWeather(coordinates.latitude, coordinates.longitude);
+            getFiveDayForecast(coordinates.latitude, coordinates.longitude);
+        })
+}
+
+defaultDisplay()
+
 function reformatDate(date) {
     let newDate = date;
     let year = newDate.slice(0, 4);
