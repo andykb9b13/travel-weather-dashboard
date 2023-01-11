@@ -91,3 +91,9 @@ h2 {
         font-size: 1em;
     }
 }
+
+@media screen and (max-width: 800px) {
+    #five-day-container {
+        flex-direction: column;
+    }
+}
